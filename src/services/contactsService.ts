@@ -4,6 +4,8 @@ import { CreateContactResponse } from '../models/responses/CreateContactResponse
 import { ContactValidator, ValidationResult, ValidationError } from '../validators/contactValidator';
 import { ValidationException } from '../validators/exceptions/validationException';
 
+let next_id = 1;
+
 const formatMessage = (errors: ValidationError[]) => {
     return errors.map(error => `${error.property}: ${error.message}`).join(', ');
 }
@@ -17,8 +19,9 @@ const ValidateContact = (contact: Contact) => {
 }
 
 export const createContact = (contact: CreateContactRequest): CreateContactResponse => {
-    const newContact = new Contact(10, contact.name, contact.email, contact.phone, contact.address, contact.imagePath);
+    const newContact = new Contact(next_id, contact.name, contact.email, contact.phone, contact.address, contact.imagePath);
     ValidateContact(newContact);
+    next_id++;
     return { id: newContact.id, 
             succeeded: true, 
             message: "Contact successfully created.", 
