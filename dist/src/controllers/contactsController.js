@@ -32,7 +32,7 @@ function createContact(req, res) {
     try {
         const body = req.body;
         const response = contactsService.createContact(body);
-        return res.status(200).send(response.id);
+        return res.status(200).send(response);
     }
     catch (error) {
         let code = 500;

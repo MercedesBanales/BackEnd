@@ -1,5 +1,5 @@
 export interface CreateContactResponse {
-    id: number;
+    id: number | undefined;
     succeeded: boolean;
     message: string;
 }

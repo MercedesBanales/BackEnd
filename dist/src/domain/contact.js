@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Contact = void 0;
 class Contact {
-    constructor(id, name, email, phone, address, imagePath) {
+    constructor(name, email, phone, address, imagePath) {
         this.merge = (contact) => {
             var _a, _b, _c, _d, _e;
             this.name = (_a = contact.name) !== null && _a !== void 0 ? _a : this.name;
@@ -11,7 +11,6 @@ class Contact {
             this.address = (_d = contact.address) !== null && _d !== void 0 ? _d : this.address;
             this.imagePath = (_e = contact.imagePath) !== null && _e !== void 0 ? _e : this.imagePath;
         };
-        this._id = id;
         this._name = name;
         this._email = email;
         this._phone = phone;
@@ -35,6 +34,9 @@ class Contact {
     }
     get imagePath() {
         return this._imagePath;
+    }
+    set id(id) {
+        this._id = id;
     }
     set name(name) {
         this._name = name;

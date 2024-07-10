@@ -3,10 +3,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 class User {
     constructor(id, name, email, password) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
+        this._id = id;
+        this._name = name;
+        this._email = email;
+        this._password = password;
+    }
+    get id() {
+        return this._id;
+    }
+    get name() {
+        return this._name;
+    }
+    get email() {
+        return this._email;
+    }
+    get password() {
+        return this._password;
+    }
+    set id(id) {
+        this._id = id;
     }
 }
 exports.User = User;

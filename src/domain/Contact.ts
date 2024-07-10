@@ -1,13 +1,12 @@
 export class Contact {
-    private _id: number;
+    private _id!: number;
     private _name: string;
     private _email: string;
     private _address: string;
     private _phone: string;
     private _imagePath: string;
 
-    constructor(id: number, name: string, email: string, phone: string, address: string, imagePath: string) {
-        this._id = id;
+    constructor(name: string, email: string, phone: string, address: string, imagePath: string) {
         this._name = name;
         this._email = email;
         this._phone = phone;
@@ -15,7 +14,7 @@ export class Contact {
         this._imagePath = imagePath;
     }
 
-    public get id(): number {
+    public get id(): number | undefined {
         return this._id;
     }
 
@@ -37,6 +36,10 @@ export class Contact {
 
     public get imagePath(): string {
         return this._imagePath;
+    }
+
+    public set id(id: number) {
+        this._id = id;
     }
 
     public set name(name: string) {

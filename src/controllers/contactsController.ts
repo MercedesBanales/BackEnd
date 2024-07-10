@@ -3,6 +3,7 @@ import * as contactsService from '../services/contactsService';
 import { CreateContactRequest } from '../models/requests/CreateContactRequest';
 import { ValidationException } from '../validators/exceptions/validationException';
 import { CreateContactResponse } from '../models/responses/CreateContactResponse';
+import { ListContactsResponse } from '../models/responses/ListContactsResponse';
 
 export function createContact(req: Request, res: Response) {
     try {
@@ -18,7 +19,8 @@ export function createContact(req: Request, res: Response) {
 
 export function getContacts(req: Request, res: Response) {
     try {
-        return res.status(200).send({ message: 'Contact created' });
+        const response: ListContactsResponse = contactsService.getContacts();
+        return res.status(200).send({ response });
 
     } catch (error: any) {
         return res.status(500).send({ message: error.message });

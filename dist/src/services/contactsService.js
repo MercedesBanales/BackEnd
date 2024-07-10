@@ -15,14 +15,12 @@ const ValidateContact = (contact) => {
     }
 };
 const createContact = (contact) => {
-    const newContact = new contact_1.Contact(10, contact.name, contact.email, contact.phone, contact.address, contact.imagePath);
+    const newContact = new contact_1.Contact(contact.name, contact.email, contact.phone, contact.address, contact.imagePath);
     ValidateContact(newContact);
     return { id: newContact.id,
-        name: newContact.name,
-        email: newContact.email,
-        address: newContact.address,
-        phone: newContact.phone,
-        imagePath: newContact.imagePath };
+        succeeded: true,
+        message: "Contact successfully created.",
+    };
 };
 exports.createContact = createContact;
 //# sourceMappingURL=contactsService.js.map
