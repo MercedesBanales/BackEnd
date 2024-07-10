@@ -1,11 +1,14 @@
 import { Contact } from '../domain/contact';
 import * as contactsRepository from '../dataAccess/contactsRepository';
 import { CreateContactRequest } from '../models/requests/CreateContactRequest';
-import { CreateContactResponse } from '../models/responses/CreateContactResponse';
+import { CreateContactResponse} from '../models/responses/CreateContactResponse';
 import { ContactValidator, ValidationResult, ValidationError } from '../validators/contactValidator';
 import { ValidationException } from '../validators/exceptions/validationException';
+import { NotFoundException } from '../validators/exceptions/notFoundException';
 import { ContactResponse } from '../models/responses/ContactResponse';
 import { ListContactsResponse } from '../models/responses/ListContactsResponse';
+import { UpdateContactResponse } from '../models/responses/UpdateContactResponse';
+import { UpdateContactRequest } from '../models/requests/UpdateContactRequest';
 
 
 const formatMessage = (errors: ValidationError[]) => {
@@ -37,6 +40,14 @@ export const getContacts = (): ListContactsResponse => {
             email: c.email, 
             phone: c.phone, 
             address: c.address, 
-            imagePath: c.imagePath }) as ContactResponse )
-    };
+            imagePath: c.imagePath }) as ContactResponse )};
 }
+
+export const updateContact = (id: number, request: UpdateContactRequest): UpdateContactResponse => {
+    //email and name validation
+    if (!contactsRepository.exists(id)) throw new NotFoundException('Contact not found');
+    const contact = new Contact(request.name, request.email, request.phone, request.address, request.imagePath);
+    contactsRepository.updateContact(id, contact);
+    return { succeeded: true, message: "Contact successfully updated." };
+}
+

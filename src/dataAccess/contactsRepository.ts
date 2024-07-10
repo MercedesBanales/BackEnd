@@ -14,8 +14,12 @@ export const getContacts = (): Contact[] => {
     return contacts;
 }
 
-export const updateContact = (contact: Contact): Contact => {
-    const index = contacts.findIndex(c => c.id === contact.id);
+export const updateContact = (id: number, contact: Contact): Contact => {
+    const index = contacts.findIndex(c => c.id === id);
     contacts[index].merge(contact)
     return contact;
+}
+
+export const exists = (id: number): boolean => {
+    return contacts.some(c => c.id === id);
 }
