@@ -12,7 +12,6 @@ export const login = async (req: Request, res: Response) => {
     try {
         const request: LoginRequest = req.body;
         const user = await usersService.getUser(request.email, request.password);
-        const t = process.env.JWT_SECRET;
         const token = jwt.sign(
             { 
                 id: user.getDataValue("id"), 
@@ -22,6 +21,7 @@ export const login = async (req: Request, res: Response) => {
             process.env.JWT_SECRET as string,
             { expiresIn: '1h' }
         );
+        usersService.setActiveUser(user);
         const response: LoginResponse = { token: token, message: "Logged in successfully", succeeded: true };
         return res.status(200).send(response);
 
