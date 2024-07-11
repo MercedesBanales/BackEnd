@@ -23,8 +23,8 @@ const ValidateContact = (contact: Contact) => {
     }
 }
 
-export const createContact = (contact: CreateContactRequest): CreateContactResponse => {
-    const newContact = new Contact(contact.name, contact.email, contact.phone, contact.address, contact.imagePath);
+export const createContact = (user_id: number, contact: CreateContactRequest): CreateContactResponse => {
+    const newContact = new Contact(contact.name, contact.email, contact.phone, contact.address, contact.imagePath, user_id);
     ValidateContact(newContact);
     const addedContact = contactsRepository.createContact(newContact);
     return { id: addedContact.id, 
@@ -33,9 +33,9 @@ export const createContact = (contact: CreateContactRequest): CreateContactRespo
         };
 }
 
-export const getContacts = (): ListContactsResponse => {
+export const getContacts = (user_id: number): ListContactsResponse => {
     return {
-        contacts: contactsRepository.getContacts().map(c => ({ id: c.id, 
+        contacts: contactsRepository.getContacts(user_id).map(c => ({ id: c.id, 
             name: c.name, 
             email: c.email, 
             phone: c.phone, 
@@ -44,11 +44,11 @@ export const getContacts = (): ListContactsResponse => {
     };
 }
 
-export const updateContact = (id: number, request: UpdateContactRequest): UpdateContactResponse => {
+export const updateContact = (contact_id: number, user_id: number, request: UpdateContactRequest): UpdateContactResponse => {
     //email and name validation
-    if (!contactsRepository.exists(id)) throw new NotFoundException('Contact not found');
-    const contact = new Contact(request.name, request.email, request.phone, request.address, request.imagePath);
-    contactsRepository.updateContact(id, contact);
+    if (!contactsRepository.exists(contact_id)) throw new NotFoundException('Contact not found');
+    const contact = new Contact(request.name, request.email, request.phone, request.address, request.imagePath, user_id);
+    contactsRepository.updateContact(contact_id, contact);
     return { succeeded: true, message: "Contact successfully updated." };
 }
 

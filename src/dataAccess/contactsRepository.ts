@@ -10,8 +10,8 @@ export const createContact = (contact: Contact) : Contact => {
         return contact
 }
 
-export const getContacts = (): Contact[] => {
-    return contacts;
+export const getContacts = (user_id: number): Contact[] => {
+    return contacts.filter(c => c.userId === user_id);
 }
 
 export const updateContact = (id: number, contact: Contact): Contact => {
