@@ -1,21 +1,20 @@
-import { Contact } from '../domain/contact';
-import * as contactsRepository from '../dataAccess/contactsRepository';
-import { CreateContactRequest } from '../models/requests/CreateContactRequest';
-import { CreateContactResponse} from '../models/responses/CreateContactResponse';
+import { CreateContactRequest } from '../apiModels/requests/CreateContactRequest';
+import { CreateContactResponse} from '../apiModels/responses/CreateContactResponse';
 import { ContactValidator, ValidationResult, ValidationError } from '../validators/contactValidator';
 import { ValidationException } from '../validators/exceptions/validationException';
 import { NotFoundException } from '../validators/exceptions/notFoundException';
-import { ContactResponse } from '../models/responses/ContactResponse';
-import { ListContactsResponse } from '../models/responses/ListContactsResponse';
-import { UpdateContactResponse } from '../models/responses/UpdateContactResponse';
-import { UpdateContactRequest } from '../models/requests/UpdateContactRequest';
-
+import { ContactResponse } from '../apiModels/responses/ContactResponse';
+import { ListContactsResponse } from '../apiModels/responses/ListContactsResponse';
+import { UpdateContactResponse } from '../apiModels/responses/UpdateContactResponse';
+import { UpdateContactRequest } from '../apiModels/requests/UpdateContactRequest';
+import { ContactDTO } from '../utils/DTOs/ContactDTO';
+import * as contactsRepository from '../dataAccess/repositories/contactsRepository';
 
 const formatMessage = (errors: ValidationError[]) => {
     return errors.map(error => `${error.property}: ${error.message}`).join(', ');
 }
 
-const ValidateContact = (contact: Contact) => {
+const ValidateContact = (contact: ContactDTO) => {
     const contactValidator = new ContactValidator()
     const validationResult: ValidationResult = contactValidator.Validate(contact);
     if (validationResult.hasErrors) {
@@ -23,32 +22,40 @@ const ValidateContact = (contact: Contact) => {
     }
 }
 
-export const createContact = (user_id: number, contact: CreateContactRequest): CreateContactResponse => {
-    const newContact = new Contact(contact.name, contact.email, contact.phone, contact.address, contact.imagePath, user_id);
-    ValidateContact(newContact);
-    const addedContact = contactsRepository.createContact(newContact);
-    return { id: addedContact.id, 
-            succeeded: true, 
-            message: "Contact successfully created.", 
-        };
-}
-
-export const getContacts = (user_id: number): ListContactsResponse => {
+const CreateDTO = (contact: any, user_id: string): ContactDTO => {
     return {
-        contacts: contactsRepository.getContacts(user_id).map(c => ({ id: c.id, 
-            name: c.name, 
-            email: c.email, 
-            phone: c.phone, 
-            address: c.address, 
-            imagePath: c.imagePath }) as ContactResponse)
-    };
+        name: contact.name,
+        email: contact.email,
+        phone: contact.phone,
+        address: contact.address,
+        imagePath: contact.imagePath,
+        user_id: user_id
+    }
 }
 
-export const updateContact = (contact_id: number, user_id: number, request: UpdateContactRequest): UpdateContactResponse => {
-    //email and name validation
-    if (!contactsRepository.exists(contact_id)) throw new NotFoundException('Contact not found');
-    const contact = new Contact(request.name, request.email, request.phone, request.address, request.imagePath, user_id);
-    contactsRepository.updateContact(contact_id, contact);
+export const createContact = async (user_id: string, contact: CreateContactRequest): Promise<CreateContactResponse> => {
+    const newContact: ContactDTO = CreateDTO(contact, user_id);
+    ValidateContact(newContact);
+    const addedContact = await contactsRepository.createContact(newContact);
+    return { id: addedContact.getDataValue('id'), succeeded: true, message: "Contact successfully created." };
+}
+
+export const getContacts = async (user_id: string): Promise<ListContactsResponse> => {
+    const contacts = await contactsRepository.getContacts(user_id);
+    return { contacts: contacts.map(contact => ({
+        id: contact.getDataValue('id'), 
+        name: contact.getDataValue('name'), 
+        email: contact.getDataValue('email'), 
+        phone: contact.getDataValue('phone'), 
+        address: contact.getDataValue('address'), 
+        imagePath: contact.getDataValue('imagePath')
+    }) as ContactResponse ) };
+}
+
+export const updateContact = async (contact_id: string, user_id: string, request: UpdateContactRequest): Promise<UpdateContactResponse> => {
+    if (!await contactsRepository.exists(contact_id, user_id)) throw new NotFoundException('The current user does not have this contact.');
+    const contact: ContactDTO = CreateDTO(request, user_id);
+    contactsRepository.updateContact(contact_id, contact);   
     return { succeeded: true, message: "Contact successfully updated." };
 }
 

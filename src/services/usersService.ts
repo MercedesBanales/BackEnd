@@ -1,5 +1,16 @@
-import * as usersRepository from '../dataAccess/usersRepository';
+import { UserDTO } from "../utils/DTOs/UserDTO";
+import * as user from "../dataAccess/repositories/userRepository";
 
-export const getUser = (email: string, password: string) => {
-    return usersRepository.getUser(email, password);
+let activeUser: UserDTO | null = null;
+
+export const findUser = async (email: string, password: string) => {
+    return await user.findUser(email, password);
+}
+
+export const getActiveUser = ()=> {
+    return activeUser;
+}
+
+export const setActiveUser = (user: UserDTO) => {
+    activeUser = user;
 }
