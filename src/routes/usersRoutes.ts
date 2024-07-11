@@ -1,11 +1,13 @@
 import { Router } from 'express';
 import * as usersController from '../controllers/usersController';
+import { authenticateToken } from '../utils/authorization';
 
 const router = Router();
 
 router.get(
     "/users",
-    usersController.getUser,
+    authenticateToken(),
+    usersController.getLoggedUser,
 );
 
 export default router;

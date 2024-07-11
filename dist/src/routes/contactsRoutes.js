@@ -25,9 +25,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const contactsController = __importStar(require("../controllers/contactsController"));
+const authorization_1 = require("../utils/authorization");
 const router = (0, express_1.Router)();
-router.post("/contacts", contactsController.createContact);
-router.get("/contacts", contactsController.getContacts);
-router.put("/contacts/:id", contactsController.updateContact);
+router.post("/contacts", (0, authorization_1.authenticateToken)(), contactsController.createContact);
+router.get("/contacts", (0, authorization_1.authenticateToken)(), contactsController.getContacts);
+router.put("/contacts/:id", (0, authorization_1.authenticateToken)(), contactsController.updateContact);
 exports.default = router;
 //# sourceMappingURL=contactsRoutes.js.map

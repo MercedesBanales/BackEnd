@@ -40,7 +40,8 @@ export const getContacts = (): ListContactsResponse => {
             email: c.email, 
             phone: c.phone, 
             address: c.address, 
-            imagePath: c.imagePath }) as ContactResponse )};
+            imagePath: c.imagePath }) as ContactResponse)
+    };
 }
 
 export const updateContact = (id: number, request: UpdateContactRequest): UpdateContactResponse => {
