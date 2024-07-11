@@ -1,12 +1,12 @@
-import { CreateContactRequest } from '../models/requests/CreateContactRequest';
-import { CreateContactResponse} from '../models/responses/CreateContactResponse';
+import { CreateContactRequest } from '../apiModels/requests/CreateContactRequest';
+import { CreateContactResponse} from '../apiModels/responses/CreateContactResponse';
 import { ContactValidator, ValidationResult, ValidationError } from '../validators/contactValidator';
 import { ValidationException } from '../validators/exceptions/validationException';
 import { NotFoundException } from '../validators/exceptions/notFoundException';
-import { ContactResponse } from '../models/responses/ContactResponse';
-import { ListContactsResponse } from '../models/responses/ListContactsResponse';
-import { UpdateContactResponse } from '../models/responses/UpdateContactResponse';
-import { UpdateContactRequest } from '../models/requests/UpdateContactRequest';
+import { ContactResponse } from '../apiModels/responses/ContactResponse';
+import { ListContactsResponse } from '../apiModels/responses/ListContactsResponse';
+import { UpdateContactResponse } from '../apiModels/responses/UpdateContactResponse';
+import { UpdateContactRequest } from '../apiModels/requests/UpdateContactRequest';
 import { ContactDTO } from '../utils/DTOs/ContactDTO';
 import * as contactsRepository from '../dataAccess/repositories/contactsRepository';
 

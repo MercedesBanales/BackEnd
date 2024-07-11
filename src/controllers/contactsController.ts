@@ -1,12 +1,12 @@
 import type { Response } from 'express';
 import * as contactsService from '../services/contactsService';
-import { CreateContactRequest } from '../models/requests/CreateContactRequest';
+import { CreateContactRequest } from '../apiModels/requests/CreateContactRequest';
 import { ValidationException } from '../validators/exceptions/validationException';
-import { CreateContactResponse } from '../models/responses/CreateContactResponse';
-import { ListContactsResponse } from '../models/responses/ListContactsResponse';
+import { CreateContactResponse } from '../apiModels/responses/CreateContactResponse';
+import { ListContactsResponse } from '../apiModels/responses/ListContactsResponse';
 import { NotFoundException } from '../validators/exceptions/notFoundException';
-import { UpdateContactRequest } from '../models/requests/UpdateContactRequest';
-import { UserRequest } from '../models/requests/UserRequest';
+import { UpdateContactRequest } from '../apiModels/requests/UpdateContactRequest';
+import { UserRequest } from '../apiModels/requests/UserRequest';
 
 export async function createContact(req: UserRequest, res: Response) {
     try {

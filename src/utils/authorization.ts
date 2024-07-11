@@ -1,5 +1,5 @@
 import { NextFunction } from "express";
-import { UserRequest } from "../models/requests/UserRequest";
+import { UserRequest } from "../apiModels/requests/UserRequest";
 import jwt, { type VerifyErrors } from 'jsonwebtoken';
 import { Response } from "express"
 import * as usersService from '../services/usersService';
@@ -16,7 +16,7 @@ export const authenticateToken = () => (req: UserRequest, res: Response, next: N
     if (!token) return res.sendStatus(401);
 
     jwt.verify(token, process.env.JWT_SECRET as string, (err: VerifyErrors | null, user: any) => {
-      if (err || user.id != usersService.getActiveUser()?.getDataValue("id")) return res.sendStatus(403);
+      if (err || user.id != usersService.getActiveUser()?.id) return res.sendStatus(403);
       updateRequest(req, user)
       next();
     });

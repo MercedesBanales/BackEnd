@@ -1,22 +1,23 @@
 import { Request, Response } from 'express';
 import * as usersService from '../services/usersService';
-import { LoginRequest } from '../models/requests/LoginRequest';
+import { LoginRequest } from '../apiModels/requests/LoginRequest';
 import { NotFoundException } from '../validators/exceptions/notFoundException';
-import { LoginResponse } from '../models/responses/LoginResponse';
+import { LoginResponse } from '../apiModels/responses/LoginResponse';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { UserDTO } from '../utils/DTOs/UserDTO';
 
 dotenv.config();
 
 export const login = async (req: Request, res: Response) => {
     try {
         const request: LoginRequest = req.body;
-        const user = await usersService.getUser(request.email, request.password);
+        const user: UserDTO = await usersService.findUser(request.email, request.password);
         const token = jwt.sign(
             { 
-                id: user.getDataValue("id"), 
-                name: user.getDataValue("name"), 
-                email: user.getDataValue("email")
+                id: user.id, 
+                name: user.name, 
+                email: user.email
             },
             process.env.JWT_SECRET as string,
             { expiresIn: '1h' }

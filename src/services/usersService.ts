@@ -1,18 +1,16 @@
-import { User } from "../dataAccess/models/User";
-import { NotFoundException } from "../validators/exceptions/notFoundException";
+import { UserDTO } from "../utils/DTOs/UserDTO";
+import * as user from "../dataAccess/repositories/userRepository";
 
-let activeUser: User | null = null;
+let activeUser: UserDTO | null = null;
 
-export const getUser = async (email: string, password: string) => {
-    const user = await User.findOne({ where: { email: email, password: password } });
-    if (!user) throw new NotFoundException("User not found.");
-    return user;
+export const findUser = async (email: string, password: string) => {
+    return await user.findUser(email, password);
 }
 
 export const getActiveUser = ()=> {
     return activeUser;
 }
 
-export const setActiveUser = (user: User) => {
+export const setActiveUser = (user: UserDTO) => {
     activeUser = user;
 }

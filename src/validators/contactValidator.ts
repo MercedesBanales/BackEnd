@@ -1,5 +1,5 @@
 import { Validator } from 'fluentvalidation-ts';
-import { CreateContactRequest } from '../models/requests/CreateContactRequest';
+import { CreateContactRequest } from '../apiModels/requests/CreateContactRequest';
 
 export interface ValidationError {
     property: string;
