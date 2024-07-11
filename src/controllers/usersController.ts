@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import type { Response } from 'express';
 import { UserRequest } from '../models/requests/UserRequest';
 import { UserResponse } from '../models/responses/UserResponse';
 

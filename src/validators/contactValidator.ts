@@ -1,5 +1,5 @@
 import { Validator, ValueValidationResult } from 'fluentvalidation-ts';
-import { Contact } from '../domain/contact';
+import { Contact } from '../dataAccess/contact';
 
 export interface ValidationError {
     property: string;

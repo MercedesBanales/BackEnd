@@ -1,4 +1,4 @@
-import { Contact } from '../domain/contact';
+import { Contact } from '../dataAccess/contact';
 import * as contactsRepository from '../dataAccess/contactsRepository';
 import { CreateContactRequest } from '../models/requests/CreateContactRequest';
 import { CreateContactResponse} from '../models/responses/CreateContactResponse';

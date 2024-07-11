@@ -5,11 +5,13 @@
     },
     "dependencies": {
         "-": "^0.0.1",
+        "@sequelize/sqlite3": "^7.0.0-alpha.41",
         "dotenv": "^16.4.5",
         "express": "^4.19.2",
         "fluentvalidation-ts": "^3.2.0",
         "jsonwebtoken": "^9.0.2",
         "save-dev": "^0.0.1-security",
+        "sequelize": "^6.37.3",
         "ts-node": "^10.9.2"
     },
     "devDependencies": {

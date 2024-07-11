@@ -1,10 +1,9 @@
 import { NextFunction } from "express";
 import { UserRequest } from "../models/requests/UserRequest";
-import { User } from "../domain/user";
 import jwt from 'jsonwebtoken';
 import { Request, Response } from "express"
 
-const updateRequest = (req: UserRequest, user: User) => {
+const updateRequest = (req: UserRequest, user: UserRequest) => {
     req.id = user.id;
     req.name = user.name;
     req.email = user.email;

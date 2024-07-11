@@ -8,13 +8,17 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const login = (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
     try {
         const request: LoginRequest = req.body;
-        const user = usersService.getUser(request.email, request.password);
+        const user = await usersService.getUser(request.email, request.password);
         const t = process.env.JWT_SECRET;
         const token = jwt.sign(
-            { id: user.id, name: user.name, email: user.email},
+            { 
+                id: user.getDataValue("id"), 
+                name: user.getDataValue("name"), 
+                email: user.getDataValue("email")
+            },
             process.env.JWT_SECRET as string,
             { expiresIn: '1h' }
         );

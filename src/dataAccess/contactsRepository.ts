@@ -1,4 +1,4 @@
-import { Contact } from '../domain/contact';
+import { Contact } from './contact';
 
 const contacts: Contact[] = [];
 let next_id = 1;
