@@ -1,5 +1,5 @@
-import { Validator, ValueValidationResult } from 'fluentvalidation-ts';
-import { Contact } from '../dataAccess/contact';
+import { Validator } from 'fluentvalidation-ts';
+import { CreateContactRequest } from '../models/requests/CreateContactRequest';
 
 export interface ValidationError {
     property: string;
@@ -11,7 +11,7 @@ export interface ValidationResult {
     errors: ValidationError[];
 }
 
-export class ContactValidator extends Validator<Contact> {
+export class ContactValidator extends Validator<CreateContactRequest> {
   constructor() {
     super();
 
@@ -22,7 +22,7 @@ export class ContactValidator extends Validator<Contact> {
     this.ruleFor('email').emailAddress().withMessage('Please enter a valid email address');
   }
 
-  Validate = (contact: Contact): ValidationResult => {
+  Validate = (contact: CreateContactRequest): ValidationResult => {
     const results = this.validate(contact);
     const errors: ValidationError[] = Object.entries(results).map(([property, error]) => ({
         property,

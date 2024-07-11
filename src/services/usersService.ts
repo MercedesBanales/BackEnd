@@ -1,4 +1,4 @@
-import { User } from "../dataAccess/User";
+import { User } from "../dataAccess/models/User";
 import { NotFoundException } from "../validators/exceptions/notFoundException";
 
 export const getUser = async (email: string, password: string) => {
