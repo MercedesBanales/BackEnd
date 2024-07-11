@@ -2,7 +2,7 @@ import express from 'express';
 import contactsRoutes from './routes/contactsRoutes';
 import usersRoutes from './routes/usersRoutes';
 import authenticationRoutes from './routes/authenticationRoutes';
-import { dbSync, sequelize } from "./database"
+import { dbSync, sequelize } from "./config/database"
 
 const app = express();
 const port = 3000;
