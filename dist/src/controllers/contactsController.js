@@ -28,6 +28,7 @@ exports.getContacts = getContacts;
 exports.updateContact = updateContact;
 const contactsService = __importStar(require("../services/contactsService"));
 const validationException_1 = require("../validators/exceptions/validationException");
+const notFoundException_1 = require("../validators/exceptions/notFoundException");
 function createContact(req, res) {
     try {
         const body = req.body;
@@ -43,7 +44,8 @@ function createContact(req, res) {
 }
 function getContacts(req, res) {
     try {
-        return res.status(200).send({ message: 'Contact created' });
+        const response = contactsService.getContacts();
+        return res.status(200).send({ response });
     }
     catch (error) {
         return res.status(500).send({ message: error.message });
@@ -51,10 +53,18 @@ function getContacts(req, res) {
 }
 function updateContact(req, res) {
     try {
-        return res.status(200).send({ message: 'Contact created' });
+        const id = parseInt(req.params.id);
+        const body = req.body;
+        const response = contactsService.updateContact(id, body);
+        return res.status(200).send({ response });
     }
     catch (error) {
-        return res.status(500).send({ message: error.message });
+        let code = 500;
+        if (error instanceof validationException_1.ValidationException)
+            code = 400;
+        if (error instanceof notFoundException_1.NotFoundException)
+            code = 404;
+        return res.status(code).send({ message: error.message });
     }
 }
 //# sourceMappingURL=contactsController.js.map

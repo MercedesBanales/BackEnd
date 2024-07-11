@@ -1,4 +1,6 @@
+import { Response } from 'express';
+
 export interface UserResponse {
-    name: string;
-    email: string;
+    name?: string;
+    email?: string;
 }

@@ -5,13 +5,15 @@ export class Contact {
     private _address: string;
     private _phone: string;
     private _imagePath: string;
+    private _userId: number;
 
-    constructor(name: string, email: string, phone: string, address: string, imagePath: string) {
+    constructor(name: string, email: string, phone: string, address: string, imagePath: string, userId: number) {
         this._name = name;
         this._email = email;
         this._phone = phone;
         this._address = address;
         this._imagePath = imagePath;
+        this._userId = userId;
     }
 
     public get id(): number | undefined {
@@ -36,6 +38,10 @@ export class Contact {
 
     public get imagePath(): string {
         return this._imagePath;
+    }
+
+    public get userId(): number {
+        return this._userId;
     }
 
     public set id(id: number) {
