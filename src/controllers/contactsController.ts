@@ -10,7 +10,7 @@ import { UserRequest } from '../apiModels/requests/UserRequest';
 
 export async function createContact(req: UserRequest, res: Response) {
     try {
-        const body: CreateContactRequest = req.body;
+        const body: CreateContactRequest = { ...req.body, imagePath: req.file?.filename}
         const user_id = req.id!;
         const response: CreateContactResponse = await contactsService.createContact(user_id, body);
         return res.status(200).send(response);
@@ -37,6 +37,7 @@ export async function updateContact(req: UserRequest, res: Response) {
         const contact_id = req.params.id;
         const user_id = req.id!;
         const body: UpdateContactRequest = req.body;
+        if (req.file) body.imagePath = req.file.filename;
         const response = await contactsService.updateContact(contact_id, user_id, body);
         return res.status(200).send({ response });
 

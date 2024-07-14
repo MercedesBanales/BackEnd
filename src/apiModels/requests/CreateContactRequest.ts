@@ -3,5 +3,5 @@ export interface CreateContactRequest {
     address: string;
     email: string;
     phone: string;
-    imagePath: string;
+    imagePath?: string;
 }

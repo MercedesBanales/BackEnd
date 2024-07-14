@@ -28,8 +28,8 @@ Contact.init({
     },
     imagePath: {
         type: DataTypes.STRING,
-        allowNull: false
-    },
+        allowNull: true
+    }
 }, {
     sequelize,
     tableName: 'Contact',
