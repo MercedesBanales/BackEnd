@@ -1,12 +1,14 @@
 import { Router } from 'express';
 import * as contactsController from '../controllers/contactsController';
 import { authenticateToken } from '../utils/authorization';
+import { upload } from '../utils/uploadImage';
 
 const router = Router();
 
 router.post(
     "/contacts",
     authenticateToken(),
+    upload.single("file"),
     contactsController.createContact,
 );
 
@@ -19,6 +21,7 @@ router.get(
 router.put(
     "/contacts/:id",
     authenticateToken(),
+    upload.single("file"),
     contactsController.updateContact,
 );
 
