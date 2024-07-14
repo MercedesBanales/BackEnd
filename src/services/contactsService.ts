@@ -36,8 +36,12 @@ const CreateDTO = (contact: any, user_id: string): ContactDTO => {
 export const createContact = async (user_id: string, contact: CreateContactRequest): Promise<CreateContactResponse> => {
     const newContact: ContactDTO = CreateDTO(contact, user_id);
     ValidateContact(newContact);
+    if (await contactsRepository.existsPhone(newContact.phone, user_id)) throw new ValidationException('A contact with that phone number already exists.')
     const addedContact = await contactsRepository.createContact(newContact);
-    return { id: addedContact.getDataValue('id'), succeeded: true, message: "Contact successfully created." };
+    return { id: addedContact.getDataValue('id'), 
+        imagePath: addedContact.getDataValue('imagePath'), 
+        succeeded: true, 
+        message: "Contact successfully created." };
 }
 
 export const getContacts = async (user_id: string): Promise<ListContactsResponse> => {

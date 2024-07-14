@@ -20,6 +20,10 @@ export const exists = async (contact_id: string, user_id: string) => {
     return await Contact.findOne({ where: { id: contact_id, UserId: user_id } });
 }
 
+export const existsPhone = async (phone: string, user_id: string) => {
+    return await Contact.findOne({ where: { phone: phone, UserId: user_id } });
+}
+
 export const updateContact = async (contact_id: string, request: ContactDTO) => {
     const contact = await Contact.findByPk(contact_id);
     return await contact!.update({

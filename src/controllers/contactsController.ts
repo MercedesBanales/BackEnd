@@ -26,7 +26,6 @@ export async function getContacts(req: UserRequest, res: Response) {
         const user_id = req.id!;
         const response: ListContactsResponse = await contactsService.getContacts(user_id);
         return res.status(200).send({ response });
-
     } catch (error: any) {
         return res.status(500).send({ message: error.message });
     }
