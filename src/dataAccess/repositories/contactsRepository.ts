@@ -4,9 +4,11 @@ import { Contact } from "../models/Contact";
 export const createContact = async (contact: ContactDTO) => {
     return await Contact.create({
         "name": contact.name,
+        "surname": contact.surname,
         "email": contact.email,
         "phone": contact.phone,
         "address": contact.address,
+        "title": contact.title,
         "imagePath": contact.imagePath,
         "UserId": contact.user_id
     });

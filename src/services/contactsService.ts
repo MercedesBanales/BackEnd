@@ -25,9 +25,11 @@ const ValidateContact = (contact: ContactDTO) => {
 const CreateDTO = (contact: any, user_id: string): ContactDTO => {
     return {
         name: contact.name,
+        surname: contact.surname,
         email: contact.email,
         phone: contact.phone,
         address: contact.address,
+        title: contact.title,
         imagePath: contact.imagePath,
         user_id: user_id
     }
@@ -49,7 +51,9 @@ export const getContacts = async (user_id: string): Promise<ListContactsResponse
     return { contacts: contacts.map(contact => ({
         id: contact.getDataValue('id'), 
         name: contact.getDataValue('name'), 
+        surname: contact.getDataValue('surname'),
         email: contact.getDataValue('email'), 
+        title: contact.getDataValue('title'),
         phone: contact.getDataValue('phone'), 
         address: contact.getDataValue('address'), 
         imagePath: contact.getDataValue('imagePath')

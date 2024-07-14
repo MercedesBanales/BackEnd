@@ -14,6 +14,10 @@ Contact.init({
         type: DataTypes.STRING,
         allowNull: false
     },
+    surname: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     email: {
         type: DataTypes.STRING,
         allowNull: false
@@ -23,6 +27,10 @@ Contact.init({
         allowNull: false
     },
     address: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    title: {
         type: DataTypes.STRING,
         allowNull: false
     },

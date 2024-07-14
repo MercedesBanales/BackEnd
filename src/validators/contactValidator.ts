@@ -16,9 +16,11 @@ export class ContactValidator extends Validator<CreateContactRequest> {
     super();
 
     this.ruleFor('name').notEmpty().withMessage('Please enter your name');
+    this.ruleFor('surname').notEmpty().withMessage('Please enter your surname');
     this.ruleFor('email').notEmpty().withMessage('Please enter your email');
     this.ruleFor('phone').notEmpty().withMessage('Please enter your phone number');
     this.ruleFor('address').notEmpty().withMessage('Please enter your address');
+    this.ruleFor('title').notEmpty().withMessage('Please enter your title');
     this.ruleFor('email').emailAddress().withMessage('Please enter a valid email address');
   }
 
