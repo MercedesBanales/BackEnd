@@ -39,7 +39,6 @@ export async function updateContact(req: UserRequest, res: Response) {
         if (req.file) body.imagePath = req.file.filename;
         const response = await contactsService.updateContact(contact_id, user_id, body);
         return res.status(200).send({ response });
-
     } catch (error:any) {
         let code=500;
         if (error instanceof ValidationException) code=400;

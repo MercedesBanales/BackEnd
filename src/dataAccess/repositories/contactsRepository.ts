@@ -30,9 +30,11 @@ export const updateContact = async (contact_id: string, request: ContactDTO) => 
     const contact = await Contact.findByPk(contact_id);
     return await contact!.update({
         name: request.name,
+        surname: request.surname,
         email: request.email,
         phone: request.phone,
         address: request.address,
+        title: request.title,
         imagePath: request.imagePath
     });
 }

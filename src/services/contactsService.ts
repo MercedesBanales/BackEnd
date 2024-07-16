@@ -62,8 +62,9 @@ export const getContacts = async (user_id: string): Promise<ListContactsResponse
 
 export const updateContact = async (contact_id: string, user_id: string, request: UpdateContactRequest): Promise<UpdateContactResponse> => {
     if (!await contactsRepository.exists(contact_id, user_id)) throw new NotFoundException('The current user does not have this contact.');
+    if (request.phone && await contactsRepository.existsPhone(request.phone, user_id)) throw new ValidationException('A contact with that phone number already exists.');
     const contact: ContactDTO = CreateDTO(request, user_id);
-    contactsRepository.updateContact(contact_id, contact);   
-    return { succeeded: true, message: "Contact successfully updated." };
+    const updatedContact = await contactsRepository.updateContact(contact_id, contact);  
+    return { imagePath: updatedContact.getDataValue('imagePath'), succeeded: true, message: "Contact successfully updated." };
 }
 
