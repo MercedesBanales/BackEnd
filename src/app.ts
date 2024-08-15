@@ -5,12 +5,10 @@ import usersRoutes from './routes/usersRoutes';
 import authenticationRoutes from './routes/authenticationRoutes';
 import { dbSync, sequelize } from "./config/database"
 import { Contact } from './dataAccess/models/Contact';
-import path from 'path';
 import { User } from './dataAccess/models/User';
 
 const app = express();
 const port = 3000;
-const imagePath = path.join(__dirname, 'BackEnd', 'contactImages');
 
 const main = async () => {
     try {
@@ -26,7 +24,6 @@ const main = async () => {
         credentials: true
     }));
 
-    app.use('/contactImages', express.static(imagePath));
     app.use(express.json());
     app.use("/api", contactsRoutes);
     app.use("/api", usersRoutes);

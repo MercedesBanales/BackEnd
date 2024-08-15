@@ -22,7 +22,6 @@ export const login = async (req: Request, res: Response) => {
             process.env.JWT_SECRET as string,
             { expiresIn: '1h' }
         );
-        console.log(token)
         usersService.setActiveUser(user);
         const response: LoginResponse = { token: token, message: "Logged in successfully", succeeded: true };
         return res.status(200).send(response);
