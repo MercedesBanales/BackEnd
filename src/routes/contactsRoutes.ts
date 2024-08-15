@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import * as contactsController from '../controllers/contactsController';
-import { authenticateToken } from '../utils/authorization';
+import { authenticateToken } from '../middleware/authenticateToken';
 import { upload } from '../utils/uploadImage';
 
 const router = Router();
