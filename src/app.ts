@@ -24,6 +24,10 @@ const main = async () => {
         credentials: true
     }));
 
+    // await Contact.destroy({
+    //     where: {}, // This condition matches all rows
+    //   });
+
     app.use(express.json());
     app.use("/api", contactsRoutes);
     app.use("/api", usersRoutes);

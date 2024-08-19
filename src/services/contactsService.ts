@@ -1,52 +1,16 @@
-import { CreateContactRequest } from '../apiModels/requests/CreateContactRequest';
-import { CreateContactResponse} from '../apiModels/responses/CreateContactResponse';
-import { ContactValidator, ValidationResult, ValidationError } from '../validators/contactValidator';
 import { ValidationException } from '../validators/exceptions/validationException';
 import { NotFoundException } from '../validators/exceptions/notFoundException';
-import { ContactResponse } from '../apiModels/responses/ContactResponse';
-import { ListContactsResponse } from '../apiModels/responses/ListContactsResponse';
-import { UpdateContactResponse } from '../apiModels/responses/UpdateContactResponse';
-import { UpdateContactRequest } from '../apiModels/requests/UpdateContactRequest';
 import { ContactDTO } from '../utils/DTOs/ContactDTO';
 import * as contactsRepository from '../dataAccess/repositories/contactsRepository';
 
-const formatMessage = (errors: ValidationError[]) => {
-    return errors.map(error => `${error.property}: ${error.message}`).join(', ');
-}
-
-const ValidateContact = (contact: ContactDTO) => {
-    const contactValidator = new ContactValidator()
-    const validationResult: ValidationResult = contactValidator.Validate(contact);
-    if (validationResult.hasErrors) {
-        throw new ValidationException(formatMessage(validationResult.errors));
-    }
-}
-
-const CreateDTO = (contact: any, user_id: string): ContactDTO => {
-    return {
-        name: contact.name,
-        surname: contact.surname,
-        email: contact.email,
-        phone: contact.phone,
-        address: contact.address,
-        title: contact.title,
-        imagePath: contact.imagePath,
-        user_id: user_id
-    }
-}
-
-export const createContact = async (user_id: string, contact: CreateContactRequest): Promise<CreateContactResponse> => {
-    const newContact: ContactDTO = CreateDTO(contact, user_id);
-    ValidateContact(newContact);
-    if (await contactsRepository.existsPhone(newContact.phone, user_id)) throw new ValidationException('A contact with that phone number already exists.')
-    const addedContact = await contactsRepository.createContact(newContact);
+export const createContact = async (user_id: string, contact: ContactDTO): Promise<{ id: number, imagePath: string }> => {
+    if (await contactsRepository.existsPhone(contact.phone, user_id)) throw new ValidationException('A contact with that phone number already exists.')
+    const addedContact = await contactsRepository.createContact(contact);
     return { id: addedContact.getDataValue('id'), 
-        imagePath: addedContact.getDataValue('imagePath'), 
-        succeeded: true, 
-        message: "Contact successfully created." };
+        imagePath: addedContact.getDataValue('imagePath') };
 }
 
-export const getContacts = async (user_id: string): Promise<ListContactsResponse> => {
+export const getContacts = async (user_id: string): Promise<{ contacts: ContactDTO[]}> => {
     const contacts = await contactsRepository.getContacts(user_id);
     return { contacts: contacts.map(contact => ({
         id: contact.getDataValue('id'), 
@@ -57,14 +21,13 @@ export const getContacts = async (user_id: string): Promise<ListContactsResponse
         phone: contact.getDataValue('phone'), 
         address: contact.getDataValue('address'), 
         imagePath: contact.getDataValue('imagePath')
-    }) as ContactResponse ) };
+    }) as ContactDTO ) };
 }
 
-export const updateContact = async (contact_id: string, user_id: string, request: UpdateContactRequest): Promise<UpdateContactResponse> => {
+export const updateContact = async (contact_id: string, user_id: string, contact: ContactDTO): Promise<{ imagePath: string }> => {
     if (!await contactsRepository.exists(contact_id, user_id)) throw new NotFoundException('The current user does not have this contact.');
-    if (request.phone && await contactsRepository.existsPhone(request.phone, user_id)) throw new ValidationException('A contact with that phone number already exists.');
-    const contact: ContactDTO = CreateDTO(request, user_id);
+    if (contact.phone && await contactsRepository.existsPhone(contact.phone, user_id)) throw new ValidationException('A contact with that phone number already exists.');
     const updatedContact = await contactsRepository.updateContact(contact_id, contact);  
-    return { imagePath: updatedContact.getDataValue('imagePath'), succeeded: true, message: "Contact successfully updated." };
+    return { imagePath: updatedContact.getDataValue('imagePath') };
 }
 
